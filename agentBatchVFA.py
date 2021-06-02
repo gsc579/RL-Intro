@@ -124,6 +124,7 @@ class LeastSquaresTD(BatchAgent):
         A = np.zeros((self.nA * self.nS, self.nA * self.nS))
         b = np.zeros((self.nA * self.nS, 1))
         for di, dn in enumerate(self.sequence):
+            #enumerate在字典上是枚举、列举的意思
             # Get data from array
             state, action, reward, state_prime, action_prime, E = dn
 
@@ -132,6 +133,7 @@ class LeastSquaresTD(BatchAgent):
             features_prime = self.featurize.featureStateAction(state_prime, action_prime)
 
             A_delta = np.matmul(features, (features - self.gamma * features_prime).T)
+            #np.matmul两个numpy数组的矩阵相乘
             A += A_delta
 
             b_delta = reward * features
