@@ -95,10 +95,10 @@ class EGreedyPolicyTabular:
 
 # Implements an e-greedy policy for an agent using value function approximation.
 # The policy returns an action given an input state and VFA function.
-# The epsilon of the policy decays according to the parameter 'decay'
+# The epsilon of the policy decays衰减 according to the parameter 'decay'
 class EGreedyPolicyVFA:
     def __init__(self, epsilon, decay = 1):
-        self.epsilon = epsilon
+        self.epsilon = epsilon #ϵ
         self.decay = decay
 
     def setNActions(self, nA):
@@ -107,6 +107,8 @@ class EGreedyPolicyVFA:
     def getAction(self, VFA, featurize, state):
         # VFA is the value function approximator
         if np.random.random() > self.epsilon:
+            #np.random.random((1000, 20))
+            #上面这个就代表一千个浮点数，从0-20中随机。
             # Take a greedy action
             return self.greedyAction(VFA, featurize, state)
         # Take an exploratory action
@@ -115,6 +117,9 @@ class EGreedyPolicyVFA:
     # Returns a random action
     def randomAction(self):
         return np.random.randint(self.nA)
+    #numpy.random.randint(low, high=None, size=None, dtype='l')
+    #函数的作用是，返回一个随机整型数，范围从低（包括）到高（不包括），即[low, high)，如果没有写参数high的值，则返回[0,low)的值。
+    #总共有nA个动作，每个动作对于一个数字，这里随机产生一个数字，也即随机产生一个动作
 
     # Returns a greedy action
     def greedyAction(self, VFA, featurize, state):
@@ -123,8 +128,8 @@ class EGreedyPolicyVFA:
 
         for action in range(self.nA):
              # Get the value of the state action pair from VFA
-            features = featurize.featureStateAction(state, action)
-            value = VFA.getValue(features)
+            features = featurize.featureStateAction(state, action)#先输入状态-动作对得到对应的特征函数
+            value = VFA.getValue(features) #输入特征函数得到对于的值函数
 
             if maxVal is None: # For the fist (s,a), intialize 'maxVal'
                 maxVal = value
@@ -140,6 +145,7 @@ class EGreedyPolicyVFA:
     # Returns an array containing the action with the highest value for every state
     def getDetArray(self, VFA, featurize, nS):
         detActions = np.zeros((nS, 1))
+        #np.zeros((nS, 1)) ns行 1列 个0
         actionVals = np.zeros((self.nA, 1)) # Stores the values for all actions
                                             # in a given state
         for state in range(nS):
