@@ -174,6 +174,9 @@ class LSTDQ(BatchAgent):
 
             # Compute A' greedily from S'
             action_star = self.policy.greedyAction(self.VFA, self.featurize, state_prime)
+            #the difference of LSTD with LSTDQ
+            #LSTDQ Compute A' greedily from S' but LSTD get A' by sequence
+            #LSTDQ 获得A'是和之前不同的策略，而LSTD则是用的和之前一样的策略
 
             # Compute the pertinent feature vectors
             features = self.featurize.featureStateAction(state, action)
